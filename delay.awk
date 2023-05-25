@@ -1,12 +1,11 @@
 BEGIN {
+    seqno = -1
 
-    seqno = -1; 
+    droppedPackets = 0
 
-    droppedPackets = 0;
+    receivedPackets = 0
 
-    receivedPackets = 0;
-
-    count = 0;
+    count = 0
 
     recvdSize = 0
 
@@ -16,75 +15,37 @@ BEGIN {
 }
 
 {
-
     #packet delivery ratio
-
-    if($4 == "AGT" && $1 == "s" && seqno < $6) {
-
-    seqno = $6;
-
-    } else if(($4 == "AGT") && ($1 == "r")) {
-
-    receivedPackets++;
-
-    } else if ($1 == "D" && $7 == "tcp" && $8 > 512){
-
-    droppedPackets++; 
-
-    }
+    if ($4 == "AGT" && $1 == "s" && seqno < $6) { seqno = $6 }
+    else if (($4 == "AGT") && ($1 == "r")) { receivedPackets++ }
+    else if ($1 == "D" && $7 == "tcp" && $8 > 512) { droppedPackets++ }
 
     #end-to-end delay
-
-    if($4 == "AGT" && $1 == "s") {
-
-    tp++;
-    start_time[$6] = $2;
-
-    } else if($1 == "r") {
-
-    end_time[$6] = $2;
-
-
-    } else if($1 == "D" && $7 == "tcp") {
-
-    end_time[$6] = -1;
-
+    if ($4 == "AGT" && $1 == "s") {
+        tp++
+        start_time[$6] = $2
     }
-              event = $1
+    else if ($1 == "r") { end_time[$6] = $2 }
+    else if ($1 == "D" && $7 == "tcp") { end_time[$6] = -1 }
 
-              time = $2
+    event = $1
 
-              node_id = $3
+    time = $2
 
-              pkt_size = $8
+    node_id = $3
 
-              level = $4
+    pkt_size = $8
 
-    
+    level = $4
 
-   # Store start time
+    # Store start time
+    if (level == "AGT" && event == "s" && pkt_size >= 512) {
+        if (time < startTime) { startTime = time }
+    }
 
-   if (level == "AGT" && event == "s" && pkt_size >= 512) {
-
-     if (time < startTime) {
-
-              startTime = time
-
-              }
-
-        }
-
-    
-
-   # Update total received packets' size and store packets arrival time
-
-   if (level == "AGT" && event == "r" && pkt_size >= 512) {
-
-        if (time > stopTime) {
-
-              stopTime = time
-
-              }
+    # Update total received packets' size and store packets arrival time
+    if (level == "AGT" && event == "r" && pkt_size >= 512) {
+        if (time > stopTime) { stopTime = time }
 
         # Rip off the header
 
@@ -95,47 +56,41 @@ BEGIN {
         # Store received packet's size
 
         recvdSize += pkt_size
-
-        }
-
+    }
 }
 
- 
-
-END { 
-    for(i=0; i<=seqno; i++) {
+END {
+    for (i = 0; i <= seqno; i++) {
         #print" For " i " : "end_time[i];
-
-        if(end_time[i] > 0) {
-            delay[i] = end_time[i] - start_time[i];
-            count++;
+        if (end_time[i] > 0) {
+            delay[i] = end_time[i] - start_time[i]
+            count++
         }
-        else{
-            delay[i] = -1;
-        }
+        else { delay[i] = -1 }
     }
 
-    for(i=0; i<count; i++) {
-        if(delay[i] > 0) {
-            n_to_n_delay = n_to_n_delay + delay[i];
-        } 
-    }
-    if(count > 0){
-    n_to_n_delay = n_to_n_delay/count;
+    for (i = 0; i < count; i++) {
+        if (delay[i] > 0) { n_to_n_delay = n_to_n_delay + delay[i] }
     }
 
-    print "GeneratedPackets = " seqno+1;
+    if (count > 0) { n_to_n_delay = n_to_n_delay / count }
 
-    print "ReceivedPackets = " receivedPackets;
+    print "GeneratedPackets = " seqno + 1
 
-    print "Packet Delivery Ratio = " receivedPackets/(seqno+1)*100
+    print "ReceivedPackets = " receivedPackets
 
-    "%";
+    print "Packet Delivery Ratio = " receivedPackets / (seqno + 1) * 100
 
-    print "Total Dropped Packets = " droppedPackets;
+    "%"
 
-    print "Average End-to-End Delay = " n_to_n_delay * 1000 " ms";
+    print "Total Dropped Packets = " droppedPackets
 
-    printf("Average Throughput[kbps] = %.2f\t\t StartTime=%.2f\tStopTime=%.2f\n",(recvdSize/(stopTime-startTime))*(8/1000),startTime,stopTime) 
+    print "Average End-to-End Delay = " n_to_n_delay * 1000 " ms"
 
+    printf(\
+        "Average Throughput[kbps] = %.2f\t\t StartTime=%.2f\tStopTime=%.2f\n",
+        (recvdSize / (stopTime - startTime)) * (8 / 1000),
+        startTime,
+        stopTime\
+    )
 }

@@ -19,7 +19,7 @@ set val(y)      300                      ;# Y dimension of topography
 set val(stop)   300.0                         ;# time of simulation end
 
 #===================================
-#        Initialization        
+#        Initialization
 #===================================
 #Create a ns simulator
 set ns [new Simulator]
@@ -43,30 +43,30 @@ set chan [new $val(chan)];#Create wireless channel
 #     Mobile node parameter setup
 #===================================
 $ns node-config -adhocRouting  $val(rp) \
-                -llType        $val(ll) \
-                -macType       $val(mac) \
-                -ifqType       $val(ifq) \
-                -ifqLen        $val(ifqlen) \
-                -antType       $val(ant) \
-                -propType      $val(prop) \
-                -phyType       $val(netif) \
-                -channel       $chan \
-                -topoInstance  $topo \
-		-energyModel "EnergyModel" \
-          	-initialEnergy 50 \
-                -txPower 0.09 \
-                -rxPower 0.07 \
-                -idlePower 0.01 \
-                -sleeppower 0.0001 \
-		-transitionPower 0.02 \
-		-transitionTime 0.0005 \
-                -agentTrace    ON \
-                -routerTrace   ON \
-                -macTrace      ON \
-                -movementTrace ON
+    -llType        $val(ll) \
+    -macType       $val(mac) \
+    -ifqType       $val(ifq) \
+    -ifqLen        $val(ifqlen) \
+    -antType       $val(ant) \
+    -propType      $val(prop) \
+    -phyType       $val(netif) \
+    -channel       $chan \
+    -topoInstance  $topo \
+    -energyModel "EnergyModel" \
+    -initialEnergy 50 \
+    -txPower 0.09 \
+    -rxPower 0.07 \
+    -idlePower 0.01 \
+    -sleeppower 0.0001 \
+    -transitionPower 0.02 \
+    -transitionTime 0.0005 \
+    -agentTrace    ON \
+    -routerTrace   ON \
+    -macTrace      ON \
+    -movementTrace ON
 
 #===================================
-#        Nodes Definition        
+#        Nodes Definition
 #===================================
 #Create 20 nodes
 set n0 [$ns node]
@@ -171,14 +171,14 @@ $n19 set Z_ 0.0
 $ns initial_node_pos $n19 20
 
 #===================================
-#        Generate movement          
+#        Generate movement
 #===================================
-$ns at 2 " $n0 setdest 50 30 5 " 
-$ns at 20 " $n4 setdest 50 290 30 " 
+$ns at 2 " $n0 setdest 50 30 5 "
+$ns at 20 " $n4 setdest 50 290 30 "
 
 
 #===================================
-#        Agents Definition        
+#        Agents Definition
 #===================================
 #Setup a UDP connection
 set udp0 [new Agent/UDP]
@@ -190,7 +190,7 @@ $udp0 set packetSize_ 1500
 
 
 #===================================
-#        Applications Definition        
+#        Applications Definition
 #===================================
 #Setup a CBR Application over UDP connection
 set cbr0 [new Application/Traffic/CBR]
@@ -203,7 +203,7 @@ $ns at 290.0 "$cbr0 stop"
 
 
 #===================================
-#        Termination        
+#        Termination
 #===================================
 #Define a 'finish' procedure
 proc finish {} {
