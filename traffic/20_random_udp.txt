@@ -1,0 +1,6 @@
+GeneratedPackets = 36525
+ReceivedPackets = 22475
+Packet Delivery Ratio = 61.5332
+Total Dropped Packets = 0
+Average End-to-End Delay = 2180.77 ms
+Average Throughput[kbps] = 319.10		 StartTime=2.00	StopTime=290.49
