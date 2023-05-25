@@ -26,7 +26,7 @@ array1 = np.array([data[factors[1]]['5_random_tcp.txt']['packet_loss'], data[fac
 array_1 = array1.transpose()
 
 array2 = np.array([data[factors[1]]['5_random_tcp.txt']['delay'], data[factors[1]]['10_random_tcp.txt']['delay'], data[factors[1]]['15_random_tcp.txt']['delay'], data[factors[1]]['20_random_tcp.txt']['delay']])
-array_2 = array1.transpose()
+array_2 = array2.transpose()
 
 array3 = np.array([data[factors[1]]['5_random_tcp.txt']['throughput'], data[factors[1]]['10_random_tcp.txt']['throughput'], data[factors[1]]['15_random_tcp.txt']['throughput'], data[factors[1]]['20_random_tcp.txt']['throughput']])
 array_3 = array3.transpose()
@@ -45,8 +45,8 @@ array_3 = array3.transpose()
 
 df_traffic = [array_1, array_2, array_3]
 
-print(df_movements_of_nodes)
-print(df_no_of_nodes)
-print(df_traffic)
+# print(df_movements_of_nodes[2])
+# print(df_no_of_nodes[2])
+print(df_traffic[2])
 # df_movement_of_nodes = []
 # df = pd.DataFrame(data, columns=factors)
