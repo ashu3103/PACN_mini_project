@@ -9,8 +9,12 @@ do
         filepath="${i}/${entry}"
         readarray -d . -t filename <<< "$entry"
         echo > "${i}/${filename}.txt"
-        ns $filepath
-        gawk -f delay.awk "${filename}.tr" > "${i}/${filename}.txt"
+        for iter in "${iters[@]}"
+        do
+            ns $filepath
+            gawk -f delay.awk "${filename}.tr" >> "${i}/${filename}.txt"
+
+        done;
     done
 done;
 

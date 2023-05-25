@@ -75,22 +75,11 @@ END {
 
     if (count > 0) { n_to_n_delay = n_to_n_delay / count }
 
-    print "GeneratedPackets = " seqno + 1
 
-    print "ReceivedPackets = " receivedPackets
 
-    print "Packet Delivery Ratio = " receivedPackets / (seqno + 1) * 100
+    print receivedPackets / (seqno + 1) * 100
 
-    "%"
+    print n_to_n_delay * 1000
 
-    print "Total Dropped Packets = " droppedPackets
-
-    print "Average End-to-End Delay = " n_to_n_delay * 1000 " ms"
-
-    printf(\
-        "Average Throughput[kbps] = %.2f\t\t StartTime=%.2f\tStopTime=%.2f\n",
-        (recvdSize / (stopTime - startTime)) * (8 / 1000),
-        startTime,
-        stopTime\
-    )
+    print (recvdSize / (stopTime - startTime)) * (8 / 1000)
 }
